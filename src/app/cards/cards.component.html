@@ -1,0 +1,74 @@
+<!-- Verifica si isLoading es falso antes de mostrar el contenido -->
+<ng-container *ngIf="!isLoading">
+  <div class="row">
+    <div class="col-12">
+      <!-- Establece la posición relativa para posicionar correctamente los controles del carrusel -->
+      <div style="position: relative;">
+        <!-- Inicia el carrusel -->
+        <carousel #carousel [showIndicators]="false">
+          <!-- Itera sobre la lista de productos en cardsFinals -->
+          <ng-container *ngFor="let product of cardsFinals; let i = index; let isLast = last">
+            <!-- Muestra dos tarjetas por slide en pantallas grandes y una tarjeta por slide en pantallas pequeñas -->
+            <ng-container *ngIf="(i % 2 === 0 && isLargeScreen) || isSmallScreen">
+              <!-- Crea un nuevo slide y establece el primer slide como activo -->
+              <slide [active]="i === 0">
+                <!-- Contenedor de tarjetas -->
+                <div class="card-container">
+                  <!-- Primera tarjeta -->
+                  <div class="card card card-small">
+                    
+                    <!-- Contenido de la tarjeta para "product" -->
+                    <div class="card-body">
+                      <div class="custom-control custom-checkbox card-checkbox">
+                        <input class="custom-control-input" type="checkbox" [id]="'checkbox' + i" (change)="onCheckboxChange($event)">
+                        <label class="custom-control-label" for="checkbox{{i}}"></label>
+                      </div>
+                      <h5 class="card-title title-card" style="margin-top: 20px;">{{ product.nameProduct }}</h5>
+                      <p class="card-text second-item">{{ product.numberProduct }}</p>
+                      <p class="card-text second-item text-aux" style="margin-top: 40px;">Ya cuentas con:</p>
+                      <p class="card-text card-value" style="margin-top: -10px;">{{ product.balanceProduct }}</p>
+                      <p class="card-text"><small class="text-muted"><span class="styleOne">Cuentas con: </span>
+                      <span class="styleTwo">{{product.balanceProduct}}</span>, <span class="styleOne">{{ product.detaildProduct }}</span></small></p>
+                    </div>
+                  </div>
+                  <!-- Segunda tarjeta, si no es la última y la pantalla es grande -->
+                  <div class="card card-small" *ngIf="!isSmallScreen && !isLast && cardsFinals[i + 1]" style="margin-left: 20px;">
+                    <!-- Contenido de la tarjeta para "cardsFinals[i + 1]" -->
+                    <div class="checkbox-container">
+                      <input class="custom-control-input" type="checkbox" [id]="'checkbox' + i" (change)="onCheckboxChange($event)">
+                      <label class="custom-control-label" [for]="'checkbox' + i"></label>
+                    </div>
+                    
+                    <div class="card-body">
+                      <h5 class="card-title title-card" style="margin-top: 20px;">{{ cardsFinals[i + 1].nameProduct }}</h5>
+                      <p class="card-text second-item">{{ cardsFinals[i + 1].numberProduct }}</p>
+                      <p class="card-text second-item text-aux" style="margin-top: 40px;">Ya cuentas con:</p>
+                      <p class="card-text card-value" style="margin-top: -10px;">{{ cardsFinals[i + 1].balanceProduct }}</p>
+                      <p class="card-text"><small class="text-muted"><span class="styleOne">Cuentas con: </span>
+                      <span class="styleTwo">{{cardsFinals[i + 1].balanceProduct}}</span>, <span class="styleOne">{{ cardsFinals[i + 1].detaildProduct }}</span></small></p>
+                    </div>
+                  </div>
+                </div>
+              </slide>
+            </ng-container>
+          </ng-container>
+        </carousel>
+      </div>
+      <div class="carousel-controls">
+        <a class="carousel-control-prev" role="button" (click)="slidePrev(carousel)">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only"></span>
+        </a>
+        <a class="carousel-control-next" role="button" (click)="slideNext(carousel)">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only"></span>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <button id="asociar-btn" type="button" class="btn btn-primary my-button"  [class.green]="anyCheckboxSelected" 
+    style="margin-top: 20px;">ASOCIAR A OBJETIVO</button>
+</div>
+</ng-container>
